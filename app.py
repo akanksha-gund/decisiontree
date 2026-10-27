@@ -8,7 +8,7 @@ app = Flask(__name__)
 with open('decision.pkl', 'rb') as f:
     model = pickle.load(f)
 
-# HTML template with modern Tailwind CSS styling
+# HTML template with modern Tailwind CSS styling & Placement Illustration Image
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -24,18 +24,20 @@ HTML_TEMPLATE = """
 </head>
 <body class="bg-gradient-to-br from-indigo-50 via-blue-50 to-slate-100 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-10">
-            <div class="inline-flex items-center justify-center bg-indigo-600 text-white rounded-full p-3 shadow-lg mb-4">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                </svg>
+        
+        <!-- Header & Image Section -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 mb-8">
+            <div class="relative h-48 sm:h-64 bg-indigo-900 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80" alt="Students Success" class="w-full h-full object-cover opacity-40">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent flex flex-col justify-end p-6 sm:p-8">
+                    <span class="text-indigo-400 font-semibold text-sm uppercase tracking-wider mb-1">Career Intelligence Portal</span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Campus Placement Predictor</h1>
+                    <p class="text-slate-300 mt-1 text-sm sm:text-base">Evaluate your placement eligibility based on past academic records and performance metrics.</p>
+                </div>
             </div>
-            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Campus Placement Predictor</h1>
-            <p class="mt-2 text-lg text-slate-600">Enter academic and professional details to evaluate placement eligibility.</p>
         </div>
 
-        <!-- Main Card -->
+        <!-- Main Form Card -->
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
             <form action="/" method="POST" class="p-8 sm:p-10 space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -171,8 +173,6 @@ def home():
     prediction_text = None
     if request.method == 'POST':
         try:
-            # Feature order extracted from decision.pkl:
-            # ['gender', 'ssc_p', 'ssc_b', 'hsc_p', 'hsc_b', 'hsc_s', 'degree_p', 'degree_t', 'workex', 'etest_p', 'specialisation', 'mba_p']
             gender = int(request.form['gender'])
             ssc_p = float(request.form['ssc_p'])
             ssc_b = int(request.form['ssc_b'])
@@ -197,4 +197,4 @@ def home():
     return render_template_string(HTML_TEMPLATE, prediction_text=prediction_text)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5002)
